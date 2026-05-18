@@ -1,4 +1,4 @@
-using FarouqsRecordShopUI.Client.Pages;
+
 using FarouqsRecordShopUI.Components;
 
 var builder = WebApplication.CreateBuilder(args);
