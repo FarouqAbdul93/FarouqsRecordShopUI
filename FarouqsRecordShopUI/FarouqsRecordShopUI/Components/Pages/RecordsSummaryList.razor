@@ -1,0 +1,13 @@
+﻿@using FarouqsRecordShopUI.Models
+
+<div class="d-flex flex-wrap">
+    @foreach (var album in Albums)
+    {
+        <RecordSummary Album="album" />
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<Album> Albums { get; set; }
+}

@@ -1,0 +1,12 @@
+﻿@using FarouqsRecordShopUI.Models
+
+<div class="card m-2 p-3">
+    <h3>@Album.Title</h3>
+    <p>@Album.Artist</p>
+    <p>@Album.Genre — @Album.ReleaseYear</p>
+</div>
+
+@code {
+    [Parameter]
+    public Album Album { get; set; }
+}
