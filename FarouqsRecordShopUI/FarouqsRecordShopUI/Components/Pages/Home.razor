@@ -1,8 +1,20 @@
 ﻿@page "/"
+@using FarouqsRecordShopUI.Models
 
 <PageTitle>Farouq's Record Shop</PageTitle>
 
 <h1>Welcome to Farouq's Record Shop</h1>
-<p>Browse our collection of albums below.</p>
 
-<RecordsLoader />
+<RecordDetails Album="testAlbum" />
+
+@code {
+    private Album testAlbum = new Album
+    {
+        Id = 1,
+        Title = "The Documentary",
+        Artist = "The Game",
+        Genre = "Hip-Hop",
+        ReleaseYear = 2005,
+        Stock = 20
+    };
+}

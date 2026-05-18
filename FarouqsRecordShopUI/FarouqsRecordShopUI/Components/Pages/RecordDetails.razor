@@ -1,0 +1,76 @@
+﻿@rendermode InteractiveServer
+@using FarouqsRecordShopUI.Models
+
+<div class="card p-4" style="max-width: 600px;">
+    <h2>Record Details</h2>
+
+    <EditForm Model="editableAlbum">
+        <div class="mb-3">
+            <label>Title</label>
+            <InputText class="form-control" @bind-Value="editableAlbum.Title" />
+        </div>
+        <div class="mb-3">
+            <label>Artist</label>
+            <InputText class="form-control" @bind-Value="editableAlbum.Artist" />
+        </div>
+        <div class="mb-3">
+            <label>Genre</label>
+            <InputText class="form-control" @bind-Value="editableAlbum.Genre" />
+        </div>
+        <div class="mb-3">
+            <label>Release Year</label>
+            <InputNumber class="form-control" @bind-Value="editableAlbum.ReleaseYear" />
+        </div>
+        <div class="mb-3">
+            <label>Stock</label>
+            <InputNumber class="form-control" @bind-Value="editableAlbum.Stock" />
+        </div>
+        <button type="button" class="btn btn-primary" @onclick="SaveChanges">Save Changes</button>
+    </EditForm>
+
+    @if (updatedAlbum != null)
+    {
+        <div class="mt-4 p-3 bg-light">
+            <h4>Updated Data:</h4>
+            <p>Title: @updatedAlbum.Title</p>
+            <p>Artist: @updatedAlbum.Artist</p>
+            <p>Genre: @updatedAlbum.Genre</p>
+            <p>Release Year: @updatedAlbum.ReleaseYear</p>
+            <p>Stock: @updatedAlbum.Stock</p>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Album Album { get; set; }
+
+    private Album editableAlbum = new Album();
+    private Album? updatedAlbum;
+
+    protected override void OnParametersSet()
+    {
+        editableAlbum = new Album
+        {
+            Id = Album.Id,
+            Title = Album.Title,
+            Artist = Album.Artist,
+            Genre = Album.Genre,
+            ReleaseYear = Album.ReleaseYear,
+            Stock = Album.Stock
+        };
+    }
+
+    private void SaveChanges()
+    {
+        updatedAlbum = new Album
+        {
+            Id = editableAlbum.Id,
+            Title = editableAlbum.Title,
+            Artist = editableAlbum.Artist,
+            Genre = editableAlbum.Genre,
+            ReleaseYear = editableAlbum.ReleaseYear,
+            Stock = editableAlbum.Stock
+        };
+    }
+}
