@@ -1,0 +1,35 @@
+﻿@using FarouqsRecordShopUI.Models
+@using System.Net.Http.Json
+
+<h2>Albums</h2>
+
+@if (errorMessage != null)
+{
+    <p class="text-danger">@errorMessage</p>
+}
+else if (albums == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <RecordsSummaryList Albums="albums" />
+}
+
+@code {
+    private List<Album>? albums;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var http = new HttpClient();
+            albums = await http.GetFromJsonAsync<List<Album>>("https://localhost:7090/api/album");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Failed to load albums: {ex.Message}";
+        }
+    }
+}

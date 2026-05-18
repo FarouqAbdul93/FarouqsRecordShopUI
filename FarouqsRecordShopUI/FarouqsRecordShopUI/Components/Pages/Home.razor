@@ -1,18 +1,8 @@
 ﻿@page "/"
-@using FarouqsRecordShopUI.Models
 
 <PageTitle>Farouq's Record Shop</PageTitle>
 
 <h1>Welcome to Farouq's Record Shop</h1>
 <p>Browse our collection of albums below.</p>
 
-<RecordsSummaryList Albums="albums" />
-
-@code {
-    private List<Album> albums = new List<Album>
-    {
-        new Album { Id = 1, Title = "Thriller", Artist = "Michael Jackson", Genre = "Pop", ReleaseYear = 1982 },
-        new Album { Id = 2, Title = "The Documentary", Artist = "The Game", Genre = "Hip Hop", ReleaseYear = 2005 },
-        new Album { Id = 3, Title = "Beautiful Gorgeous", Artist = "Akon", Genre = "R&B", ReleaseYear = 2004 }
-    };
-}
+<RecordsLoader />
