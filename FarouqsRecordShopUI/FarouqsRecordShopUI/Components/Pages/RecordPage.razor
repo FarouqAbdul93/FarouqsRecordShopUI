@@ -1,0 +1,11 @@
+﻿@page "/records/{id:int}"
+@rendermode InteractiveServer
+
+<PageTitle>Record Details</PageTitle>
+
+<RecordLoader Id="Id" />
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+}
