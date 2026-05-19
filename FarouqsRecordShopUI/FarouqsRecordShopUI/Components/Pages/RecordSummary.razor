@@ -1,10 +1,12 @@
 ﻿@using FarouqsRecordShopUI.Models
 
-<div class="card m-2 p-3">
-    <h3>@Album.Title</h3>
-    <p>@Album.Artist</p>
-    <p>@Album.Genre — @Album.ReleaseYear</p>
-</div>
+<a href="/records/@Album.Id" class="text-decoration-none text-dark">
+    <div class="card m-2 p-3" style="cursor: pointer;">
+        <h3>@Album.Title</h3>
+        <p>@Album.Artist</p>
+        <p>@Album.Genre — @Album.ReleaseYear</p>
+    </div>
+</a>
 
 @code {
     [Parameter]
