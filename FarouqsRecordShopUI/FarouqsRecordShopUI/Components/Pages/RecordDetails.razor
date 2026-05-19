@@ -1,8 +1,14 @@
 ﻿@rendermode InteractiveServer
 @using FarouqsRecordShopUI.Models
+@using System.Net.Http.Json
 
 <div class="card p-4" style="max-width: 600px;">
     <h2>Record Details</h2>
+
+    @if (errorMessage != null)
+    {
+        <p class="text-danger">@errorMessage</p>
+    }
 
     <EditForm Model="editableAlbum">
         <div class="mb-3">
@@ -47,6 +53,7 @@
 
     private Album editableAlbum = new Album();
     private Album? updatedAlbum;
+    private string? errorMessage;
 
     protected override void OnParametersSet()
     {
@@ -61,16 +68,19 @@
         };
     }
 
-    private void SaveChanges()
+    private async Task SaveChanges()
     {
-        updatedAlbum = new Album
+        var http = new HttpClient();
+        var response = await http.PutAsJsonAsync($"https://localhost:7090/api/album/{editableAlbum.Id}", editableAlbum);
+
+        if (response.IsSuccessStatusCode)
         {
-            Id = editableAlbum.Id,
-            Title = editableAlbum.Title,
-            Artist = editableAlbum.Artist,
-            Genre = editableAlbum.Genre,
-            ReleaseYear = editableAlbum.ReleaseYear,
-            Stock = editableAlbum.Stock
-        };
+            updatedAlbum = editableAlbum;
+            errorMessage = null;
+        }
+        else
+        {
+            errorMessage = $"Failed to save changes. Status: {response.StatusCode}";
+        }
     }
 }
