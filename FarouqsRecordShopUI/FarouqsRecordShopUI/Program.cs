@@ -25,6 +25,7 @@ else
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+app.UseStatusCodePagesWithRedirects("/StatusCode/{0}");
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
