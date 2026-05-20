@@ -1,0 +1,22 @@
+﻿@using FarouqsRecordShopUI.Models
+
+@if (Albums != null && Albums.Count > 0)
+{
+    <RecordSummary Album="featuredAlbum" />
+}
+
+@code {
+    [CascadingParameter]
+    public List<Album>? Albums { get; set; }
+
+    private Album? featuredAlbum;
+
+    protected override void OnParametersSet()
+    {
+        if (Albums != null && Albums.Count > 0)
+        {
+            var random = new Random();
+            featuredAlbum = Albums[random.Next(Albums.Count)];
+        }
+    }
+}

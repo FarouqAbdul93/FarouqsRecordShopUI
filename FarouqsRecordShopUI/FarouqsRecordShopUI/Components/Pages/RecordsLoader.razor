@@ -1,8 +1,6 @@
 ﻿@using FarouqsRecordShopUI.Models
 @using System.Net.Http.Json
 
-<h2>Albums</h2>
-
 @if (errorMessage != null)
 {
     <p class="text-danger">@errorMessage</p>
@@ -13,10 +11,15 @@ else if (albums == null)
 }
 else
 {
-    <RecordsSummaryList Albums="albums" />
+    <CascadingValue Value="albums">
+        @ChildContent
+    </CascadingValue>
 }
 
 @code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
     private List<Album>? albums;
     private string? errorMessage;
 
