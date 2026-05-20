@@ -1,0 +1,70 @@
+﻿@rendermode InteractiveServer
+@using FarouqsRecordShopUI.Models
+@using System.Net.Http.Json
+
+<EditForm FormName="AddRecordForm" Model="@newAlbum" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="title">Title</label>
+        <InputText id="title" class="form-control" @bind-Value="newAlbum.Title" />
+        <ValidationMessage For="@(() => newAlbum.Title)" />
+    </div>
+    <div class="mb-3">
+        <label for="artist">Artist</label>
+        <InputText id="artist" class="form-control" @bind-Value="newAlbum.Artist" />
+        <ValidationMessage For="@(() => newAlbum.Artist)" />
+    </div>
+    <div class="mb-3">
+        <label for="genre">Genre</label>
+        <InputText id="genre" class="form-control" @bind-Value="newAlbum.Genre" />
+        <ValidationMessage For="@(() => newAlbum.Genre)" />
+    </div>
+    <div class="mb-3">
+        <label for="releaseYear">Release Year</label>
+        <InputNumber id="releaseYear" class="form-control" @bind-Value="newAlbum.ReleaseYear" />
+        <ValidationMessage For="@(() => newAlbum.ReleaseYear)" />
+    </div>
+    <div class="mb-3">
+        <label for="stock">Stock</label>
+        <InputNumber id="stock" class="form-control" @bind-Value="newAlbum.Stock" />
+        <ValidationMessage For="@(() => newAlbum.Stock)" />
+    </div>
+
+    @if (errorMessage != null)
+    {
+        <p class="text-danger">@errorMessage</p>
+    }
+
+    @if (successMessage != null)
+    {
+        <p class="text-success">@successMessage</p>
+    }
+
+    <button type="submit" class="btn btn-primary">Add Record</button>
+</EditForm>
+
+@code {
+    private NewAlbum newAlbum = new NewAlbum();
+    private string? errorMessage;
+    private string? successMessage;
+
+    private async Task HandleSubmit()
+    {
+        var http = new HttpClient();
+        var response = await http.PostAsJsonAsync("https://localhost:7090/api/album", newAlbum);
+
+        if (response.IsSuccessStatusCode)
+        {
+            successMessage = "Record added successfully!";
+            errorMessage = null;
+            newAlbum = new NewAlbum();
+        }
+        else
+        {
+            errorMessage = $"Failed to add record. Status: {response.StatusCode}";
+            successMessage = null;
+        }
+    }
+}
