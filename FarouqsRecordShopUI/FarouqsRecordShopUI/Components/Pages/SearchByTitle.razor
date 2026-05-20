@@ -1,0 +1,48 @@
+﻿@rendermode InteractiveServer
+@using FarouqsRecordShopUI.Models
+@using System.Net.Http.Json
+
+<h3>Search by Title</h3>
+
+<div class="mb-3">
+    <label for="searchTitle">Title</label>
+    <input id="searchTitle" type="text" class="form-control" @bind="searchTitle" />
+</div>
+<button class="btn btn-primary" @onclick="Search">Search</button>
+
+@if (errorMessage != null)
+{
+    <p class="text-danger mt-3">@errorMessage</p>
+}
+
+@if (albums != null && albums.Count > 0)
+{
+    <div class="mt-3 d-flex flex-wrap">
+        @foreach (var album in albums)
+        {
+            <RecordSummary Album="album" />
+        }
+    </div>
+}
+
+@code {
+    private string searchTitle = "";
+    private List<Album>? albums;
+    private string? errorMessage;
+
+    private async Task Search()
+    {
+        albums = null;
+        errorMessage = null;
+
+        try
+        {
+            var http = new HttpClient();
+            albums = await http.GetFromJsonAsync<List<Album>>($"https://localhost:7090/api/album/search/title/{searchTitle}");
+        }
+        catch (Exception)
+        {
+            errorMessage = $"No records found with title containing '{searchTitle}'.";
+        }
+    }
+}

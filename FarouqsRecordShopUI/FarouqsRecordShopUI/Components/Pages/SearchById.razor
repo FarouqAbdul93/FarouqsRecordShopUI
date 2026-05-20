@@ -1,0 +1,45 @@
+﻿@rendermode InteractiveServer
+@using FarouqsRecordShopUI.Models
+@using System.Net.Http.Json
+
+<h3>Search by ID</h3>
+
+<div class="mb-3">
+    <label for="searchId">Record ID</label>
+    <input id="searchId" type="number" class="form-control" @bind="searchId" />
+</div>
+<button class="btn btn-primary" @onclick="Search">Search</button>
+
+@if (errorMessage != null)
+{
+    <p class="text-danger mt-3">@errorMessage</p>
+}
+
+@if (album != null)
+{
+    <div class="mt-3">
+        <RecordSummary Album="album" />
+    </div>
+}
+
+@code {
+    private int searchId;
+    private Album? album;
+    private string? errorMessage;
+
+    private async Task Search()
+    {
+        album = null;
+        errorMessage = null;
+
+        try
+        {
+            var http = new HttpClient();
+            album = await http.GetFromJsonAsync<Album>($"https://localhost:7090/api/album/{searchId}");
+        }
+        catch (Exception)
+        {
+            errorMessage = $"No record found with ID {searchId}.";
+        }
+    }
+}
