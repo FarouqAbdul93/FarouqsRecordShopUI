@@ -1,6 +1,7 @@
 ﻿@rendermode InteractiveServer
 @using FarouqsRecordShopUI.Models
 @using System.Net.Http.Json
+@inject NavigationManager Navigation
 
 <div class="card p-4" style="max-width: 600px;">
     <h2>Record Details</h2>
@@ -45,6 +46,21 @@
             <p>Stock: @updatedAlbum.Stock</p>
         </div>
     }
+
+    <hr />
+
+    @if (showConfirmDelete)
+    {
+        <div class="alert alert-warning mt-3">
+            <p>Are you sure you want to delete <strong>@editableAlbum.Title</strong>? This cannot be undone.</p>
+            <button class="btn btn-danger me-2" @onclick="ConfirmDelete">Yes, Delete</button>
+            <button class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
+        </div>
+    }
+    else
+    {
+        <button class="btn btn-danger mt-3" @onclick="ShowDeleteConfirmation">Delete Record</button>
+    }
 </div>
 
 @code {
@@ -54,6 +70,7 @@
     private Album editableAlbum = new Album();
     private Album? updatedAlbum;
     private string? errorMessage;
+    private bool showConfirmDelete = false;
 
     protected override void OnParametersSet()
     {
@@ -72,7 +89,6 @@
     {
         var http = new HttpClient();
         var response = await http.PutAsJsonAsync($"https://localhost:7090/api/album/{editableAlbum.Id}", editableAlbum);
-
         if (response.IsSuccessStatusCode)
         {
             updatedAlbum = editableAlbum;
@@ -81,6 +97,31 @@
         else
         {
             errorMessage = $"Failed to save changes. Status: {response.StatusCode}";
+        }
+    }
+
+    private void ShowDeleteConfirmation()
+    {
+        showConfirmDelete = true;
+    }
+
+    private void CancelDelete()
+    {
+        showConfirmDelete = false;
+    }
+
+    private async Task ConfirmDelete()
+    {
+        var http = new HttpClient();
+        var response = await http.DeleteAsync($"https://localhost:7090/api/album/{editableAlbum.Id}");
+        if (response.IsSuccessStatusCode)
+        {
+            Navigation.NavigateTo("/records");
+        }
+        else
+        {
+            errorMessage = $"Failed to delete record. Status: {response.StatusCode}";
+            showConfirmDelete = false;
         }
     }
 }
